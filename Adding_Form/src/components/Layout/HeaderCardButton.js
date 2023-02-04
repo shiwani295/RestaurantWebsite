@@ -9,6 +9,8 @@ const HeaderCardButton = (props) => {
   const numberOfCartItem = cartctx.item.reduce((curNumber, item) => {
     return curNumber + item.amount;
   }, 0);
+
+  //console.log(numberOfCartItem);
   return (
     // <Fragment>
     <button className={classes.button} onClick={props.onClick}>

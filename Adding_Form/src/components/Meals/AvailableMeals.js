@@ -31,14 +31,13 @@ const DUMMY_MEALS = [
 const AvailableMeals = () => {
   const MealList = DUMMY_MEALS.map((meal) => (
     <MealItems
-      id={meal.id} // this is new!
+      id={meal.id} // this is new from mealItem
       key={meal.id}
       name={meal.name}
       description={meal.description}
       price={meal.price}
     />
   ));
-
   return (
     <section className={classes.meals}>
       <Card>
