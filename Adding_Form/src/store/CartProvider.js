@@ -9,9 +9,56 @@ const defaultCartState = {
 
 const cartReducer = (state, action) => {
   if (action.type === "ADD") {
-    const updatedItems = state.items.concat(action.item);
     const updatedTotalAmount =
       state.totalamount + action.item.price * action.item.amount;
+    console.log(action);
+    //this one for check the item already exist or not in  header Cart
+    const existingCartItemIndex = state.items.findIndex(
+      (item) => item.id === action.item.id
+    );
+    const existingCartItem = state.items[existingCartItemIndex];
+
+    let updatedItem;
+    let updatedItems;
+
+    if (existingCartItem) {
+      //here if the item already availabe ex-shushi have 2 item so here we also add the amount 2 shushi amount
+      updatedItem = {
+        ...existingCartItem,
+        amount: existingCartItem.amount + action.item.amount, //here we add amount of 2 shushi
+      };
+
+      updatedItems = [...state.items]; //creating the new arry and copying the old object
+      updatedItems[existingCartItemIndex] = updatedItem;
+      console.log(updatedItems);
+    } else {
+      //updatedItem is simply a brand new item
+      //updatedItem = { ...action.item };
+      updatedItems = state.items.concat({ ...action.item });
+    }
+    //const updatedItems = state.items.concat(action.item);
+
+    return {
+      items: updatedItems,
+      totalamount: updatedTotalAmount,
+    };
+  }
+
+  if (action.type === "REMOVE") {
+    const existingCartItemIndex = state.items.findIndex(
+      (item) => item.id === action.id
+    );
+
+    const existingItem = state.items[existingCartItemIndex];
+    const updatedTotalAmount = state.totalamount - existingItem.price;
+    let updatedItems;
+    if (existingItem.amount === 1) {
+      updatedItems = state.items.filter((items) => items.id !== action.id);
+    } else {
+      const updatedItem = { ...existingItem, amount: existingItem.amount - 1 };
+      updatedItems = [...state.items]; //copying the old object
+      updatedItems[existingCartItemIndex] = updatedItem;
+    }
     return {
       items: updatedItems,
       totalamount: updatedTotalAmount,
